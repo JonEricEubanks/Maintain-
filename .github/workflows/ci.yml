@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r agents/requirements.txt
+
+      - name: Run tests
+        run: python -m pytest agents/tests/ --ignore=agents/tests/test_rag_knowledge_base.py -q
+        env:
+          AZURE_AI_ENDPOINT: "https://placeholder.openai.azure.com"
+          AZURE_AI_KEY: "placeholder"
+          AZURE_CONTENT_SAFETY_ENDPOINT: "https://placeholder.cognitiveservices.azure.com"
+          AZURE_CONTENT_SAFETY_KEY: "placeholder"
+          AZURE_TABLE_CONN_STR: "DefaultEndpointsProtocol=https;AccountName=placeholder;AccountKey=cGxhY2Vob2xkZXI=;EndpointSuffix=core.windows.net"
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & build
+        run: npm ci && npm run build

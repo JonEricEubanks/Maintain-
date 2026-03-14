@@ -1,0 +1,387 @@
+{
+  "name": "iw_crewmember",
+  "title": "Crew Members",
+  "schema": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "x-ms-dataverse-entity": true,
+      "x-ms-dataverse-entityset": "iw_crewmembers",
+      "x-ms-dataverse-primary-id": "iw_crewmemberid",
+      "x-ms-dataverse-primary-name": "iw_name",
+      "properties": {
+        "createdby": {
+          "type": "string",
+          "title": "Created By",
+          "x-ms-dataverse-attribute": "createdby",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "createdbyname": {
+          "type": "string",
+          "title": "createdbyname",
+          "x-ms-dataverse-attribute": "createdbyname",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 100
+        },
+        "createdbyyominame": {
+          "type": "string",
+          "title": "createdbyyominame",
+          "x-ms-dataverse-attribute": "createdbyyominame",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 100
+        },
+        "createdon": {
+          "type": "string",
+          "title": "Created On",
+          "x-ms-dataverse-attribute": "createdon",
+          "x-ms-dataverse-type": "DateTimeType"
+        },
+        "createdonbehalfby": {
+          "type": "string",
+          "title": "Created By (Delegate)",
+          "x-ms-dataverse-attribute": "createdonbehalfby",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "createdonbehalfbyname": {
+          "type": "string",
+          "title": "createdonbehalfbyname",
+          "x-ms-dataverse-attribute": "createdonbehalfbyname",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 100
+        },
+        "createdonbehalfbyyominame": {
+          "type": "string",
+          "title": "createdonbehalfbyyominame",
+          "x-ms-dataverse-attribute": "createdonbehalfbyyominame",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 100
+        },
+        "importsequencenumber": {
+          "type": "string",
+          "title": "Import Sequence Number",
+          "x-ms-dataverse-attribute": "importsequencenumber",
+          "x-ms-dataverse-type": "IntegerType"
+        },
+        "iw_assignedworkorders": {
+          "type": "string",
+          "title": "Assigned Work Orders",
+          "x-ms-dataverse-attribute": "iw_assignedworkorders",
+          "x-ms-dataverse-type": "MemoType",
+          "maxLength": 10000
+        },
+        "iw_certifications": {
+          "type": "string",
+          "title": "Certifications",
+          "x-ms-dataverse-attribute": "iw_certifications",
+          "x-ms-dataverse-type": "MemoType",
+          "maxLength": 10000
+        },
+        "iw_crewid": {
+          "type": "string",
+          "title": "Crew ID",
+          "x-ms-dataverse-attribute": "iw_crewid",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 100
+        },
+        "iw_crewmemberid": {
+          "type": "string",
+          "title": "Crew Member",
+          "x-ms-dataverse-attribute": "iw_crewmemberid",
+          "x-ms-dataverse-type": "UniqueidentifierType",
+          "required": true
+        },
+        "iw_currentlat": {
+          "type": "string",
+          "title": "Current Latitude",
+          "x-ms-dataverse-attribute": "iw_currentlat",
+          "x-ms-dataverse-type": "DoubleType"
+        },
+        "iw_currentlng": {
+          "type": "string",
+          "title": "Current Longitude",
+          "x-ms-dataverse-attribute": "iw_currentlng",
+          "x-ms-dataverse-type": "DoubleType"
+        },
+        "iw_efficiencyrating": {
+          "type": "string",
+          "title": "Efficiency Rating",
+          "x-ms-dataverse-attribute": "iw_efficiencyrating",
+          "x-ms-dataverse-type": "DoubleType"
+        },
+        "iw_email": {
+          "type": "string",
+          "title": "Email",
+          "x-ms-dataverse-attribute": "iw_email",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 200
+        },
+        "iw_hiredate": {
+          "type": "string",
+          "title": "Hire Date",
+          "x-ms-dataverse-attribute": "iw_hiredate",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 100
+        },
+        "iw_isactive": {
+          "type": "string",
+          "title": "Is Active",
+          "x-ms-dataverse-attribute": "iw_isactive",
+          "x-ms-dataverse-type": "PicklistType",
+          "enum": [0, 1],
+          "x-ms-enum": {
+            "0": "No",
+            "1": "Yes"
+          }
+        },
+        "iw_isactivename": {
+          "type": "string",
+          "title": "iw_isactivename",
+          "x-ms-dataverse-attribute": "iw_isactivename",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "iw_membercount": {
+          "type": "string",
+          "title": "Member Count",
+          "x-ms-dataverse-attribute": "iw_membercount",
+          "x-ms-dataverse-type": "IntegerType"
+        },
+        "iw_name": {
+          "type": "string",
+          "title": "Name",
+          "x-ms-dataverse-attribute": "iw_name",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 200
+        },
+        "iw_phone": {
+          "type": "string",
+          "title": "Phone",
+          "x-ms-dataverse-attribute": "iw_phone",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 50
+        },
+        "iw_specialization": {
+          "type": "string",
+          "title": "Specialization",
+          "x-ms-dataverse-attribute": "iw_specialization",
+          "x-ms-dataverse-type": "PicklistType",
+          "required": true,
+          "enum": [100000000, 100000001, 100000002, 100000003],
+          "x-ms-enum": {
+            "100000000": "Pothole",
+            "100000001": "Sidewalk",
+            "100000002": "Concrete",
+            "100000003": "General"
+          }
+        },
+        "iw_specializationname": {
+          "type": "string",
+          "title": "iw_specializationname",
+          "x-ms-dataverse-attribute": "iw_specializationname",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "iw_status": {
+          "type": "string",
+          "title": "Status",
+          "x-ms-dataverse-attribute": "iw_status",
+          "x-ms-dataverse-type": "PicklistType",
+          "required": true,
+          "enum": [100000000, 100000001, 100000002, 100000003],
+          "x-ms-enum": {
+            "100000000": "Available",
+            "100000001": "Assigned",
+            "100000002": "OnBreak",
+            "100000003": "OffDuty"
+          }
+        },
+        "iw_statusname": {
+          "type": "string",
+          "title": "iw_statusname",
+          "x-ms-dataverse-attribute": "iw_statusname",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "iw_zone": {
+          "type": "string",
+          "title": "Zone",
+          "x-ms-dataverse-attribute": "iw_zone",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 50
+        },
+        "modifiedby": {
+          "type": "string",
+          "title": "Modified By",
+          "x-ms-dataverse-attribute": "modifiedby",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "modifiedbyname": {
+          "type": "string",
+          "title": "modifiedbyname",
+          "x-ms-dataverse-attribute": "modifiedbyname",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 100
+        },
+        "modifiedbyyominame": {
+          "type": "string",
+          "title": "modifiedbyyominame",
+          "x-ms-dataverse-attribute": "modifiedbyyominame",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 100
+        },
+        "modifiedon": {
+          "type": "string",
+          "title": "Modified On",
+          "x-ms-dataverse-attribute": "modifiedon",
+          "x-ms-dataverse-type": "DateTimeType"
+        },
+        "modifiedonbehalfby": {
+          "type": "string",
+          "title": "Modified By (Delegate)",
+          "x-ms-dataverse-attribute": "modifiedonbehalfby",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "modifiedonbehalfbyname": {
+          "type": "string",
+          "title": "modifiedonbehalfbyname",
+          "x-ms-dataverse-attribute": "modifiedonbehalfbyname",
+          "x-ms-dataverse-type": "StringType",
+          "maxLength": 100
+        },
+        "modifiedonbehalfbyyominame": {
+          "type": "string",
+          "title": "modifiedonbehalfbyyominame",
+          "x-ms-dataverse-attribute": "modifiedonbehalfbyyominame",
+          "x-ms-dataverse-type": "StringType",
+          "required": true,
+          "maxLength": 100
+        },
+        "overriddencreatedon": {
+          "type": "string",
+          "title": "Record Created On",
+          "x-ms-dataverse-attribute": "overriddencreatedon",
+          "x-ms-dataverse-type": "DateTimeType"
+        },
+        "ownerid": {
+          "type": "string",
+          "title": "Owner",
+          "x-ms-dataverse-attribute": "ownerid",
+          "x-ms-dataverse-type": "OwnerType",
+          "required": true
+        },
+        "owneridname": {
+          "type": "string",
+          "title": "owneridname",
+          "x-ms-dataverse-attribute": "owneridname",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "owneridtype": {
+          "type": "string",
+          "title": "owneridtype",
+          "x-ms-dataverse-attribute": "owneridtype",
+          "x-ms-dataverse-type": "EntityNameType"
+        },
+        "owneridyominame": {
+          "type": "string",
+          "title": "owneridyominame",
+          "x-ms-dataverse-attribute": "owneridyominame",
+          "x-ms-dataverse-type": "StringType",
+          "required": true
+        },
+        "owningbusinessunit": {
+          "type": "string",
+          "title": "Owning Business Unit",
+          "x-ms-dataverse-attribute": "owningbusinessunit",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "owningbusinessunitname": {
+          "type": "string",
+          "title": "owningbusinessunitname",
+          "x-ms-dataverse-attribute": "owningbusinessunitname",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "owningteam": {
+          "type": "string",
+          "title": "Owning Team",
+          "x-ms-dataverse-attribute": "owningteam",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "owninguser": {
+          "type": "string",
+          "title": "Owning User",
+          "x-ms-dataverse-attribute": "owninguser",
+          "x-ms-dataverse-type": "LookupType"
+        },
+        "statecode": {
+          "type": "string",
+          "title": "Status",
+          "x-ms-dataverse-attribute": "statecode",
+          "x-ms-dataverse-type": "StateType",
+          "enum": [0, 1],
+          "x-ms-enum": {
+            "0": "Active",
+            "1": "Inactive"
+          }
+        },
+        "statecodename": {
+          "type": "string",
+          "title": "statecodename",
+          "x-ms-dataverse-attribute": "statecodename",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "statuscode": {
+          "type": "string",
+          "title": "Status Reason",
+          "x-ms-dataverse-attribute": "statuscode",
+          "x-ms-dataverse-type": "StatusType",
+          "enum": [1, 2],
+          "x-ms-enum": {
+            "1": "Active",
+            "2": "Inactive"
+          }
+        },
+        "statuscodename": {
+          "type": "string",
+          "title": "statuscodename",
+          "x-ms-dataverse-attribute": "statuscodename",
+          "x-ms-dataverse-type": "StringType"
+        },
+        "timezoneruleversionnumber": {
+          "type": "string",
+          "title": "Time Zone Rule Version Number",
+          "x-ms-dataverse-attribute": "timezoneruleversionnumber",
+          "x-ms-dataverse-type": "IntegerType"
+        },
+        "utcconversiontimezonecode": {
+          "type": "string",
+          "title": "UTC Conversion Time Zone Code",
+          "x-ms-dataverse-attribute": "utcconversiontimezonecode",
+          "x-ms-dataverse-type": "IntegerType"
+        },
+        "versionnumber": {
+          "type": "string",
+          "title": "Version Number",
+          "x-ms-dataverse-attribute": "versionnumber",
+          "x-ms-dataverse-type": "BigIntType"
+        }
+      },
+      "required": [
+        "createdbyyominame",
+        "createdonbehalfbyyominame",
+        "iw_crewid",
+        "iw_crewmemberid",
+        "iw_name",
+        "iw_specialization",
+        "iw_status",
+        "modifiedbyyominame",
+        "modifiedonbehalfbyyominame",
+        "ownerid",
+        "owneridtype",
+        "owneridyominame",
+        "statecode"
+      ]
+    }
+  }
+}

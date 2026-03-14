@@ -1,0 +1,48 @@
+# ============================================
+# MAINTAIN AI - Python Agent Dependencies
+# ============================================
+# Install: pip install -r agents/requirements.txt
+# ============================================
+
+# Azure AI Foundry SDK (Model Inference - used by Model Router)
+azure-ai-projects>=1.0.0b5
+azure-ai-inference>=1.0.0b9
+
+# Azure Authentication
+azure-identity>=1.19.0
+
+# HTTP requests (MCP server calls)
+requests>=2.32.0
+
+# Environment variable management
+python-dotenv>=1.0.1
+
+# FastAPI server (exposes agents to React frontend)
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.0.0
+
+# OpenAI SDK (for Assistants API / Code Interpreter — NLP Dashboard only)
+openai>=1.30.0
+
+# Semantic Kernel (Microsoft AI orchestration framework)
+semantic-kernel>=1.39.0
+
+# Azure Content Safety (Responsible AI guardrails)
+azure-ai-contentsafety>=1.0.0
+
+# Azure Table Storage (production data persistence — procertaistor2026)
+azure-data-tables>=12.5.0
+
+# Azure Monitor / Application Insights (distributed tracing — procert-ai-coach)
+azure-monitor-opentelemetry>=1.2.0
+opentelemetry-api>=1.22.0
+opentelemetry-sdk>=1.22.0
+opentelemetry-instrumentation-fastapi>=0.44b0
+
+# Chart generation (report agent)
+matplotlib>=3.8.0
+numpy>=1.26.0
+
+# Machine Learning (Analysis Wizard — scikit-learn)
+scikit-learn>=1.4.0

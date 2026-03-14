@@ -1,0 +1,6 @@
+iw_name,iw_workorderid,iw_previousstatus,iw_newstatus,iw_updatedby,iw_updatedsource,iw_notes
+UPD-2026-0001,pothole-0,Open,Assigned,Prioritization Agent,AI Agent,AI ranked pothole-0 as #1 priority (score 94.2). Critical severity + school zone + Weibull failure prob 87%.
+UPD-2026-0002,pothole-0,Assigned,In Progress,Mike Rodriguez,Manager,Dispatch approved. Alpha Pothole Crew assigned and en route to 700 N Western Ave.
+UPD-2026-0003,pothole-3,In Progress,Completed,James Wilson,Field Crew,Repair completed by Apex Concrete Crew. Curb replaced joints sealed. Actual duration: 5.5h (est: 6.0h). Under budget by $400.
+UPD-2026-0004,sidewalk-1,Open,In Progress,Dispatch Agent,AI Agent,Emergency dispatch: sidewalk collapse near school entrance. Delta Rapid Response deployed. Bypassed normal approval — critical safety.
+UPD-2026-0005,sidewalk-2,Open,Assigned,Crew Estimation Agent,AI Agent,Tango Sidewalk Crew assigned. Weibull RUL: 89 days — scheduled within normal maintenance window. Pending manager approval.

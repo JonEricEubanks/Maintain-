@@ -1,0 +1,5 @@
+iw_name,iw_crewid,iw_crewname,iw_weekstart,iw_weekend,iw_plannedhours,iw_actualhours,iw_zoneassignment,iw_specialization,iw_availability,iw_planneddispatches,iw_completeddispatches,iw_aioptimized,iw_notes
+Alpha-Pothole-Wk10-2026,crew-pothole-0,Alpha Pothole Crew,2026-03-02T00:00:00Z,2026-03-06T23:59:59Z,40.0,28.5,NW-3,Pothole,85.0,6,3,Yes,Week 10: Focus on NW-3 pothole cluster near schools. Weather permitting.
+Sierra-Sidewalk-Wk10-2026,crew-sidewalk-0,Sierra Sidewalk Crew,2026-03-02T00:00:00Z,2026-03-06T23:59:59Z,40.0,16.0,NE-1,Sidewalk,90.0,4,1,Yes,Week 10: ADA compliance sidewalk repairs in NE-1. 1 pending approval.
+Apex-Concrete-Wk10-2026,crew-concrete-0,Apex Concrete Crew,2026-03-02T00:00:00Z,2026-03-06T23:59:59Z,40.0,35.5,SE-2,Concrete,75.0,3,2,Yes,Week 10: Curb replacement program SE-2. Rain delay cost 4.5h.
+Delta-General-Wk10-2026,crew-general-0,Delta Rapid Response,2026-03-02T00:00:00Z,2026-03-06T23:59:59Z,40.0,22.0,ALL,General,95.0,5,2,No,Week 10: Rapid response on standby. Deployed to school zone emergency sidewalk-1.

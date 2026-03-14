@@ -1,0 +1,52 @@
+{
+  "appId": "<your-app-id>",
+  "appDisplayName": "InfraWatch AI",
+  "description": "Predictive Infrastructure Command Center",
+  "environmentId": "<your-environment-id>",
+  "buildPath": "build",
+  "buildEntryPoint": "index.html",
+  "logoPath": "Default",
+  "localAppUrl": "http://localhost:3000/",
+  "connectionReferences": {},
+  "databaseReferences": {
+    "default.cds": {
+      "state": "Configured",
+      "instanceUrl": "https://your-org.crm.dynamics.com/",
+      "webApiVersion": "v9.0",
+      "dataSources": {
+        "crewdispatches": {
+          "entitySetName": "iw_crewdispatchs",
+          "logicalName": "iw_crewdispatch",
+          "isHidden": false
+        },
+        "fieldinspections": {
+          "entitySetName": "iw_fieldinspections",
+          "logicalName": "iw_fieldinspection",
+          "isHidden": false
+        },
+        "aidecisionlogs": {
+          "entitySetName": "iw_aidecisionlogs",
+          "logicalName": "iw_aidecisionlog",
+          "isHidden": false
+        },
+        "crewschedules": {
+          "entitySetName": "iw_crewschedules",
+          "logicalName": "iw_crewschedule",
+          "isHidden": false
+        },
+        "workorderupdates": {
+          "entitySetName": "iw_workorderupdates",
+          "logicalName": "iw_workorderupdate",
+          "isHidden": false
+        },
+        "crewmembers": {
+          "entitySetName": "iw_crewmembers",
+          "logicalName": "iw_crewmember",
+          "isHidden": false
+        }
+      },
+      "version": "v9.0",
+      "environmentVariableName": ""
+    }
+  }
+}

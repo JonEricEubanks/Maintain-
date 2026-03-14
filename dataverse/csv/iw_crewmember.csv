@@ -1,0 +1,9 @@
+iw_name,iw_crewid,iw_specialization,iw_status,iw_efficiencyrating,iw_currentlat,iw_currentlng,iw_membercount,iw_email,iw_phone,iw_certifications,iw_zone,iw_hiredate,iw_isactive
+Alpha Pothole Crew,crew-pothole-0,Pothole,Available,0.94,42.258,-87.8405,3,alpha.crew@lakeforestil.gov,847-555-0101,"[""CDL-B"",""OSHA-30"",""Hot Mix Asphalt""]",NW-3,2022-03-15,Yes
+Bravo Pothole Crew,crew-pothole-1,Pothole,Assigned,0.91,42.2345,-87.845,3,bravo.crew@lakeforestil.gov,847-555-0102,"[""CDL-B"",""OSHA-10"",""Cold Patch""]",SW-1,2023-06-01,Yes
+Echo Pothole Crew,crew-pothole-2,Pothole,Available,0.88,42.265,-87.838,3,echo.crew@lakeforestil.gov,847-555-0105,"[""CDL-B"",""OSHA-10""]",NE-1,2024-01-10,Yes
+Sierra Sidewalk Crew,crew-sidewalk-0,Sidewalk,Available,0.92,42.2456,-87.8312,4,sierra.crew@lakeforestil.gov,847-555-0103,"[""ADA Compliance"",""OSHA-30"",""Flatwork Finishing""]",NE-1,2021-09-12,Yes
+Tango Sidewalk Crew,crew-sidewalk-1,Sidewalk,Available,0.87,42.22,-87.86,4,tango.crew@lakeforestil.gov,847-555-0106,"[""ADA Compliance"",""OSHA-10"",""Mudjacking""]",SW-1,2023-11-20,Yes
+Apex Concrete Crew,crew-concrete-0,Concrete,Assigned,0.9,42.2289,-87.8267,5,apex.crew@lakeforestil.gov,847-555-0104,"[""ACI Certified"",""OSHA-30"",""Rebar Tying"",""Form Construction""]",SE-2,2020-05-08,Yes
+Core Concrete Crew,crew-concrete-1,Concrete,Available,0.86,42.25,-87.85,5,core.crew@lakeforestil.gov,847-555-0107,"[""ACI Certified"",""OSHA-10"",""Curb & Gutter""]",NW-3,2024-04-01,Yes
+Delta Rapid Response,crew-general-0,General,Available,0.89,42.243,-87.842,4,delta.crew@lakeforestil.gov,847-555-0108,"[""CDL-B"",""OSHA-30"",""First Aid/CPR"",""Flagging""]",NW-3,2022-08-15,Yes

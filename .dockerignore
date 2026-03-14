@@ -1,0 +1,36 @@
+# ============================================
+# Docker Ignore — Prevent secrets from entering images
+# ============================================
+
+# Environment files with secrets
+.env
+.env.*
+agents/.env
+
+# Git
+.git/
+.gitignore
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Docs (not needed in container)
+docs/
+
+# Build artifacts
+build/
+dist/
+
+# Python caches
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,787 @@
+[
+  {
+    "logicalName": "iw_crewdispatch",
+    "displayName": "Crew Dispatch",
+    "pluralName": "Crew Dispatches",
+    "description": "AI-generated crew dispatch assignments with approval workflow",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Dispatch Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "Auto-generated: e.g. 'DISP-2026-0001'"
+      },
+      {
+        "logicalName": "iw_workorderid",
+        "displayName": "Work Order ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true,
+        "description": "Reference to MCP work order ID"
+      },
+      {
+        "logicalName": "iw_crewid",
+        "displayName": "Crew ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true,
+        "description": "Assigned crew identifier"
+      },
+      {
+        "logicalName": "iw_crewname",
+        "displayName": "Crew Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": false
+      },
+      {
+        "logicalName": "iw_status",
+        "displayName": "Status",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Draft" },
+          { "value": 100000001, "label": "Pending Approval" },
+          { "value": 100000002, "label": "Approved" },
+          { "value": 100000003, "label": "Dispatched" },
+          { "value": 100000004, "label": "In Progress" },
+          { "value": 100000005, "label": "Completed" },
+          { "value": 100000006, "label": "Cancelled" },
+          { "value": 100000007, "label": "Rejected" }
+        ],
+        "defaultValue": 100000000
+      },
+      {
+        "logicalName": "iw_priority",
+        "displayName": "Priority",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Critical" },
+          { "value": 100000001, "label": "High" },
+          { "value": 100000002, "label": "Medium" },
+          { "value": 100000003, "label": "Low" }
+        ]
+      },
+      {
+        "logicalName": "iw_issuetype",
+        "displayName": "Issue Type",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Pothole" },
+          { "value": 100000001, "label": "Sidewalk" },
+          { "value": 100000002, "label": "Concrete" }
+        ]
+      },
+      {
+        "logicalName": "iw_address",
+        "displayName": "Address",
+        "type": "String",
+        "maxLength": 500,
+        "required": false
+      },
+      {
+        "logicalName": "iw_latitude",
+        "displayName": "Latitude",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_longitude",
+        "displayName": "Longitude",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_estimatedduration",
+        "displayName": "Estimated Duration (hours)",
+        "type": "Float",
+        "required": false,
+        "description": "AI-estimated repair time"
+      },
+      {
+        "logicalName": "iw_actualduration",
+        "displayName": "Actual Duration (hours)",
+        "type": "Float",
+        "required": false,
+        "description": "Filled in by field crew upon completion"
+      },
+      {
+        "logicalName": "iw_estimatedcost",
+        "displayName": "Estimated Cost",
+        "type": "Currency",
+        "required": false
+      },
+      {
+        "logicalName": "iw_actualcost",
+        "displayName": "Actual Cost",
+        "type": "Currency",
+        "required": false
+      },
+      {
+        "logicalName": "iw_aiconfidence",
+        "displayName": "AI Confidence Score",
+        "type": "Float",
+        "minValue": 0,
+        "maxValue": 1,
+        "required": false,
+        "description": "0.0-1.0 confidence score from prioritization agent"
+      },
+      {
+        "logicalName": "iw_aireasoning",
+        "displayName": "AI Reasoning",
+        "type": "Memo",
+        "maxLength": 10000,
+        "required": false,
+        "description": "JSON blob of reasoning steps from the AI agent"
+      },
+      {
+        "logicalName": "iw_approvedby",
+        "displayName": "Approved By",
+        "type": "String",
+        "maxLength": 200,
+        "required": false
+      },
+      {
+        "logicalName": "iw_approvedon",
+        "displayName": "Approved On",
+        "type": "DateTime",
+        "required": false
+      },
+      {
+        "logicalName": "iw_dispatchedat",
+        "displayName": "Dispatched At",
+        "type": "DateTime",
+        "required": false
+      },
+      {
+        "logicalName": "iw_completedat",
+        "displayName": "Completed At",
+        "type": "DateTime",
+        "required": false
+      },
+      {
+        "logicalName": "iw_notes",
+        "displayName": "Notes",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false
+      },
+      {
+        "logicalName": "iw_weatheratdispatch",
+        "displayName": "Weather at Dispatch",
+        "type": "String",
+        "maxLength": 200,
+        "required": false,
+        "description": "Weather conditions when crew was sent out"
+      },
+      {
+        "logicalName": "iw_nearschool",
+        "displayName": "Near School",
+        "type": "Boolean",
+        "required": false,
+        "defaultValue": false
+      },
+      {
+        "logicalName": "iw_zone",
+        "displayName": "Zone",
+        "type": "String",
+        "maxLength": 50,
+        "required": false
+      }
+    ]
+  },
+  {
+    "logicalName": "iw_fieldinspection",
+    "displayName": "Field Inspection",
+    "pluralName": "Field Inspections",
+    "description": "On-site condition reports and repair completion data from field crews",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Inspection Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "Auto-generated: e.g. 'INSP-2026-0001'"
+      },
+      {
+        "logicalName": "iw_dispatchid",
+        "displayName": "Dispatch ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true,
+        "description": "Link to crew dispatch record"
+      },
+      {
+        "logicalName": "iw_workorderid",
+        "displayName": "Work Order ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true
+      },
+      {
+        "logicalName": "iw_inspectorname",
+        "displayName": "Inspector Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true
+      },
+      {
+        "logicalName": "iw_inspectiontype",
+        "displayName": "Inspection Type",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Pre-Repair Assessment" },
+          { "value": 100000001, "label": "In-Progress Check" },
+          { "value": 100000002, "label": "Completion Report" },
+          { "value": 100000003, "label": "Quality Assurance" },
+          { "value": 100000004, "label": "Follow-Up" }
+        ]
+      },
+      {
+        "logicalName": "iw_conditionrating",
+        "displayName": "Condition Rating",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 1, "label": "1 - Critical / Unsafe" },
+          { "value": 2, "label": "2 - Poor" },
+          { "value": 3, "label": "3 - Fair" },
+          { "value": 4, "label": "4 - Good" },
+          { "value": 5, "label": "5 - Excellent / Fully Repaired" }
+        ]
+      },
+      {
+        "logicalName": "iw_repaircompleted",
+        "displayName": "Repair Completed",
+        "type": "Boolean",
+        "required": true,
+        "defaultValue": false
+      },
+      {
+        "logicalName": "iw_timespent",
+        "displayName": "Time Spent (hours)",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_materialsused",
+        "displayName": "Materials Used",
+        "type": "Memo",
+        "maxLength": 2000,
+        "required": false,
+        "description": "JSON array of materials and quantities"
+      },
+      {
+        "logicalName": "iw_photourls",
+        "displayName": "Photo URLs",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false,
+        "description": "JSON array of photo URLs / base64 references"
+      },
+      {
+        "logicalName": "iw_latitude",
+        "displayName": "GPS Latitude",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_longitude",
+        "displayName": "GPS Longitude",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_safetyhazardsfound",
+        "displayName": "Safety Hazards Found",
+        "type": "Boolean",
+        "required": false,
+        "defaultValue": false
+      },
+      {
+        "logicalName": "iw_hazarddescription",
+        "displayName": "Hazard Description",
+        "type": "Memo",
+        "maxLength": 2000,
+        "required": false
+      },
+      {
+        "logicalName": "iw_notes",
+        "displayName": "Notes",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false
+      },
+      {
+        "logicalName": "iw_weathercondition",
+        "displayName": "Weather Condition",
+        "type": "String",
+        "maxLength": 100,
+        "required": false
+      },
+      {
+        "logicalName": "iw_temperature",
+        "displayName": "Temperature (°F)",
+        "type": "Float",
+        "required": false
+      }
+    ]
+  },
+  {
+    "logicalName": "iw_aidecisionlog",
+    "displayName": "AI Decision Log",
+    "pluralName": "AI Decision Logs",
+    "description": "Audit trail of every AI recommendation for governance and responsible AI",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Decision Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "Auto-generated: e.g. 'AID-2026-0001'"
+      },
+      {
+        "logicalName": "iw_agentname",
+        "displayName": "Agent Name",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Analysis Agent" },
+          { "value": 100000001, "label": "Prioritization Agent" },
+          { "value": 100000002, "label": "Crew Estimation Agent" },
+          { "value": 100000003, "label": "Report Agent" },
+          { "value": 100000004, "label": "NLP Dashboard Agent" },
+          { "value": 100000005, "label": "Dispatch Agent" }
+        ]
+      },
+      {
+        "logicalName": "iw_decisiontype",
+        "displayName": "Decision Type",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Priority Ranking" },
+          { "value": 100000001, "label": "Crew Assignment" },
+          { "value": 100000002, "label": "Risk Assessment" },
+          { "value": 100000003, "label": "Cost Estimation" },
+          { "value": 100000004, "label": "Route Optimization" },
+          { "value": 100000005, "label": "Weather Impact" },
+          { "value": 100000006, "label": "Proactive Alert" },
+          { "value": 100000007, "label": "Dispatch Recommendation" }
+        ]
+      },
+      {
+        "logicalName": "iw_inputsummary",
+        "displayName": "Input Summary",
+        "type": "Memo",
+        "maxLength": 10000,
+        "required": false,
+        "description": "JSON summary of the input data the agent received"
+      },
+      {
+        "logicalName": "iw_outputsummary",
+        "displayName": "Output Summary",
+        "type": "Memo",
+        "maxLength": 10000,
+        "required": false,
+        "description": "JSON summary of the agent's output/recommendation"
+      },
+      {
+        "logicalName": "iw_confidencescore",
+        "displayName": "Confidence Score",
+        "type": "Float",
+        "minValue": 0,
+        "maxValue": 1,
+        "required": false
+      },
+      {
+        "logicalName": "iw_reasoningjson",
+        "displayName": "Reasoning JSON",
+        "type": "Memo",
+        "maxLength": 50000,
+        "required": false,
+        "description": "Full reasoning chain as JSON — transparent AI"
+      },
+      {
+        "logicalName": "iw_tokensused",
+        "displayName": "Tokens Used",
+        "type": "Integer",
+        "required": false
+      },
+      {
+        "logicalName": "iw_processingtimems",
+        "displayName": "Processing Time (ms)",
+        "type": "Integer",
+        "required": false
+      },
+      {
+        "logicalName": "iw_modelname",
+        "displayName": "Model Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": false,
+        "description": "e.g. gpt-4.1-mini, phi-4-reasoning"
+      },
+      {
+        "logicalName": "iw_humanoverride",
+        "displayName": "Human Override",
+        "type": "Boolean",
+        "required": false,
+        "defaultValue": false,
+        "description": "Was this AI decision overridden by a human?"
+      },
+      {
+        "logicalName": "iw_overridereason",
+        "displayName": "Override Reason",
+        "type": "Memo",
+        "maxLength": 2000,
+        "required": false
+      },
+      {
+        "logicalName": "iw_relatedworkorderids",
+        "displayName": "Related Work Order IDs",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false,
+        "description": "JSON array of work order IDs this decision relates to"
+      }
+    ]
+  },
+  {
+    "logicalName": "iw_crewschedule",
+    "displayName": "Crew Schedule",
+    "pluralName": "Crew Schedules",
+    "description": "Weekly crew assignments, zone routing, and availability tracking",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Schedule Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "e.g. 'Alpha-Pothole-Wk08-2026'"
+      },
+      {
+        "logicalName": "iw_crewid",
+        "displayName": "Crew ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true
+      },
+      {
+        "logicalName": "iw_crewname",
+        "displayName": "Crew Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": false
+      },
+      {
+        "logicalName": "iw_weekstart",
+        "displayName": "Week Start",
+        "type": "DateTime",
+        "required": true
+      },
+      {
+        "logicalName": "iw_weekend",
+        "displayName": "Week End",
+        "type": "DateTime",
+        "required": true
+      },
+      {
+        "logicalName": "iw_plannedhours",
+        "displayName": "Planned Hours",
+        "type": "Float",
+        "required": false,
+        "description": "Total planned work hours for the week"
+      },
+      {
+        "logicalName": "iw_actualhours",
+        "displayName": "Actual Hours",
+        "type": "Float",
+        "required": false
+      },
+      {
+        "logicalName": "iw_zoneassignment",
+        "displayName": "Zone Assignment",
+        "type": "String",
+        "maxLength": 100,
+        "required": false
+      },
+      {
+        "logicalName": "iw_specialization",
+        "displayName": "Specialization",
+        "type": "Choice",
+        "required": false,
+        "options": [
+          { "value": 100000000, "label": "Pothole" },
+          { "value": 100000001, "label": "Sidewalk" },
+          { "value": 100000002, "label": "Concrete" },
+          { "value": 100000003, "label": "General" }
+        ]
+      },
+      {
+        "logicalName": "iw_availability",
+        "displayName": "Availability (%)",
+        "type": "Float",
+        "minValue": 0,
+        "maxValue": 100,
+        "required": false
+      },
+      {
+        "logicalName": "iw_planneddispatches",
+        "displayName": "Planned Dispatches",
+        "type": "Integer",
+        "required": false
+      },
+      {
+        "logicalName": "iw_completeddispatches",
+        "displayName": "Completed Dispatches",
+        "type": "Integer",
+        "required": false
+      },
+      {
+        "logicalName": "iw_aioptimized",
+        "displayName": "AI Optimized",
+        "type": "Boolean",
+        "required": false,
+        "defaultValue": false,
+        "description": "Was this schedule optimized by the AI routing agent?"
+      },
+      {
+        "logicalName": "iw_notes",
+        "displayName": "Notes",
+        "type": "Memo",
+        "maxLength": 2000,
+        "required": false
+      }
+    ]
+  },
+  {
+    "logicalName": "iw_workorderupdate",
+    "displayName": "Work Order Update",
+    "pluralName": "Work Order Updates",
+    "description": "Status change log for work orders — full audit trail",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Update Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "Auto-generated: e.g. 'UPD-2026-0001'"
+      },
+      {
+        "logicalName": "iw_workorderid",
+        "displayName": "Work Order ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true
+      },
+      {
+        "logicalName": "iw_previousstatus",
+        "displayName": "Previous Status",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Open" },
+          { "value": 100000001, "label": "Assigned" },
+          { "value": 100000002, "label": "In Progress" },
+          { "value": 100000003, "label": "Completed" },
+          { "value": 100000004, "label": "Deferred" }
+        ]
+      },
+      {
+        "logicalName": "iw_newstatus",
+        "displayName": "New Status",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Open" },
+          { "value": 100000001, "label": "Assigned" },
+          { "value": 100000002, "label": "In Progress" },
+          { "value": 100000003, "label": "Completed" },
+          { "value": 100000004, "label": "Deferred" }
+        ]
+      },
+      {
+        "logicalName": "iw_updatedby",
+        "displayName": "Updated By",
+        "type": "String",
+        "maxLength": 200,
+        "required": false,
+        "description": "User or agent that triggered the status change"
+      },
+      {
+        "logicalName": "iw_updatedsource",
+        "displayName": "Updated Source",
+        "type": "Choice",
+        "required": false,
+        "options": [
+          { "value": 100000000, "label": "AI Agent" },
+          { "value": 100000001, "label": "Manager" },
+          { "value": 100000002, "label": "Field Crew" },
+          { "value": 100000003, "label": "System" }
+        ]
+      },
+      {
+        "logicalName": "iw_notes",
+        "displayName": "Notes",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false
+      }
+    ]
+  },
+  {
+    "logicalName": "iw_crewmember",
+    "displayName": "Crew Member",
+    "pluralName": "Crew Members",
+    "description": "Persistent crew/inspector roster for dispatch assignments",
+    "primaryColumn": "iw_name",
+    "columns": [
+      {
+        "logicalName": "iw_name",
+        "displayName": "Crew Name",
+        "type": "String",
+        "maxLength": 200,
+        "required": true,
+        "description": "Display name, e.g. 'Alpha Pothole Crew'"
+      },
+      {
+        "logicalName": "iw_crewid",
+        "displayName": "Crew ID",
+        "type": "String",
+        "maxLength": 100,
+        "required": true,
+        "description": "Unique crew identifier, e.g. 'crew-pothole-0'"
+      },
+      {
+        "logicalName": "iw_specialization",
+        "displayName": "Specialization",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Pothole" },
+          { "value": 100000001, "label": "Sidewalk" },
+          { "value": 100000002, "label": "Concrete" },
+          { "value": 100000003, "label": "General" }
+        ]
+      },
+      {
+        "logicalName": "iw_status",
+        "displayName": "Status",
+        "type": "Choice",
+        "required": true,
+        "options": [
+          { "value": 100000000, "label": "Available" },
+          { "value": 100000001, "label": "Assigned" },
+          { "value": 100000002, "label": "On Break" },
+          { "value": 100000003, "label": "Off Duty" }
+        ],
+        "defaultValue": 100000000
+      },
+      {
+        "logicalName": "iw_efficiencyrating",
+        "displayName": "Efficiency Rating",
+        "type": "Float",
+        "min": 0,
+        "max": 1,
+        "precision": 4,
+        "required": false,
+        "description": "0.0–1.0 performance rating"
+      },
+      {
+        "logicalName": "iw_currentlat",
+        "displayName": "Current Latitude",
+        "type": "Float",
+        "min": -90,
+        "max": 90,
+        "precision": 5,
+        "required": false
+      },
+      {
+        "logicalName": "iw_currentlng",
+        "displayName": "Current Longitude",
+        "type": "Float",
+        "min": -180,
+        "max": 180,
+        "precision": 5,
+        "required": false
+      },
+      {
+        "logicalName": "iw_membercount",
+        "displayName": "Member Count",
+        "type": "Integer",
+        "min": 1,
+        "max": 50,
+        "required": false,
+        "description": "Number of personnel in the crew"
+      },
+      {
+        "logicalName": "iw_email",
+        "displayName": "Email",
+        "type": "String",
+        "maxLength": 320,
+        "required": false,
+        "description": "Contact email (optional O365 link)"
+      },
+      {
+        "logicalName": "iw_phone",
+        "displayName": "Phone",
+        "type": "String",
+        "maxLength": 30,
+        "required": false
+      },
+      {
+        "logicalName": "iw_certifications",
+        "displayName": "Certifications",
+        "type": "Memo",
+        "maxLength": 2000,
+        "required": false,
+        "description": "JSON array of certifications"
+      },
+      {
+        "logicalName": "iw_assignedworkorders",
+        "displayName": "Assigned Work Orders",
+        "type": "Memo",
+        "maxLength": 5000,
+        "required": false,
+        "description": "JSON array of assigned work order IDs"
+      },
+      {
+        "logicalName": "iw_zone",
+        "displayName": "Zone",
+        "type": "String",
+        "maxLength": 50,
+        "required": false,
+        "description": "Geographic zone assignment"
+      },
+      {
+        "logicalName": "iw_hiredate",
+        "displayName": "Hire Date",
+        "type": "DateTime",
+        "required": false
+      },
+      {
+        "logicalName": "iw_isactive",
+        "displayName": "Is Active",
+        "type": "Boolean",
+        "default": true,
+        "required": false,
+        "description": "Soft delete flag"
+      }
+    ]
+  }
+]
