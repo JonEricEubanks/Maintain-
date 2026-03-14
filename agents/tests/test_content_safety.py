@@ -37,12 +37,12 @@ def _offline(fn):
 
 
 class TestAnalyzeTextOffline:
-    """When credentials are empty, analyze_text should pass-through safely."""
+    """When credentials are empty, analyze_text should fail-closed (block unchecked content)."""
 
     @_offline
-    def test_returns_safe_true(self):
+    def test_returns_safe_false(self):
         result = analyze_text("Some normal dispatch text")
-        assert result["safe"] is True
+        assert result["safe"] is False
 
     @_offline
     def test_analysis_not_available(self):
@@ -55,9 +55,9 @@ class TestAnalyzeTextOffline:
         assert result["categories"] == {}
 
     @_offline
-    def test_no_blocked_categories(self):
+    def test_blocked_categories_unchecked(self):
         result = analyze_text("Standard infrastructure text")
-        assert result["blocked_categories"] == []
+        assert result["blocked_categories"] == ["unchecked"]
 
     @_offline
     def test_includes_reason(self):
@@ -68,20 +68,20 @@ class TestAnalyzeTextOffline:
     @_offline
     def test_empty_string_input(self):
         result = analyze_text("")
-        assert result["safe"] is True
+        assert result["safe"] is False
 
     @_offline
     def test_none_like_handling(self):
         """Even though API checks for empty text, offline path triggers first."""
         result = analyze_text("   ")
-        assert result["safe"] is True
+        assert result["safe"] is False
         assert result["analysis_available"] is False
 
     @_offline
-    def test_long_text_still_safe(self):
+    def test_long_text_still_blocked(self):
         long_text = "repair pothole " * 1000
         result = analyze_text(long_text)
-        assert result["safe"] is True
+        assert result["safe"] is False
 
 
 # ============================================
@@ -124,10 +124,10 @@ class TestValidateDispatchRecommendation:
         assert "blockedCategories" in cs
 
     @_offline
-    def test_marked_safe_offline(self):
+    def test_marked_blocked_offline(self):
         rec = self._make_recommendation()
         result = validate_dispatch_recommendation(rec)
-        assert result["contentSafety"]["safe"] is True
+        assert result["contentSafety"]["safe"] is False
 
     @_offline
     def test_checked_false_when_offline(self):
@@ -136,10 +136,10 @@ class TestValidateDispatchRecommendation:
         assert result["contentSafety"]["checked"] is False
 
     @_offline
-    def test_no_blocked_categories_offline(self):
+    def test_blocked_categories_unchecked_offline(self):
         rec = self._make_recommendation()
         result = validate_dispatch_recommendation(rec)
-        assert result["contentSafety"]["blockedCategories"] == []
+        assert result["contentSafety"]["blockedCategories"] == ["unchecked"]
 
     @_offline
     def test_original_fields_preserved(self):
@@ -153,7 +153,7 @@ class TestValidateDispatchRecommendation:
     def test_recommendation_with_notes_field(self):
         rec = self._make_recommendation(notes="Urgent repair needed before winter")
         result = validate_dispatch_recommendation(rec)
-        assert result["contentSafety"]["safe"] is True
+        assert result["contentSafety"]["safe"] is False
 
     @_offline
     def test_recommendation_with_empty_reasoning(self):
@@ -213,10 +213,10 @@ class TestValidateDispatchPlan:
         assert "serviceAvailable" in cs
 
     @_offline
-    def test_all_safe_when_offline(self):
+    def test_all_blocked_when_offline(self):
         plan = self._make_plan(3)
         result = validate_dispatch_plan(plan)
-        assert result["contentSafety"]["allSafe"] is True
+        assert result["contentSafety"]["allSafe"] is False
 
     @_offline
     def test_total_checked_matches_rec_count(self):
@@ -225,10 +225,10 @@ class TestValidateDispatchPlan:
         assert result["contentSafety"]["totalChecked"] == 4
 
     @_offline
-    def test_zero_blocked_offline(self):
+    def test_blocked_count_matches_recs_offline(self):
         plan = self._make_plan()
         result = validate_dispatch_plan(plan)
-        assert result["contentSafety"]["totalBlocked"] == 0
+        assert result["contentSafety"]["totalBlocked"] == 2
 
     @_offline
     def test_each_rec_gets_content_safety(self):
@@ -248,14 +248,14 @@ class TestValidateDispatchPlan:
         plan = {"recommendations": []}
         result = validate_dispatch_plan(plan)
         assert result["contentSafety"]["totalChecked"] == 0
-        assert result["contentSafety"]["allSafe"] is True
+        assert result["contentSafety"]["allSafe"] is True  # vacuously true
 
     @_offline
     def test_llm_analysis_checked(self):
         plan = self._make_plan(2, include_llm=True)
         result = validate_dispatch_plan(plan)
         assert "llmContentSafety" in result
-        assert result["llmContentSafety"]["safe"] is True
+        assert result["llmContentSafety"]["safe"] is False
 
     @_offline
     def test_llm_content_safety_structure(self):

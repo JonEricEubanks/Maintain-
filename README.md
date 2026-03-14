@@ -3,7 +3,7 @@
 > **Microsoft AI Dev Days Hackathon — Build AI Applications & Agents using Microsoft AI Platform**
 
 [![CI](https://github.com/your-username/ReasoningAgent/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/ReasoningAgent/actions/workflows/ci.yml)
-![Tests](https://img.shields.io/badge/tests-252%20passed-brightgreen)
+![Tests](https://img.shields.io/badge/tests-324%20passed-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![React](https://img.shields.io/badge/react-18-61dafb)
 
@@ -690,56 +690,72 @@ Where:
 | [ERROR_LOG.md](docs/ERROR_LOG.md) | Error tracking & resolutions |
 | [DECISIONS.md](docs/DECISIONS.md) | Architecture Decision Records |
 | [AGENT_WORK_LOG.md](docs/AGENT_WORK_LOG.md) | Agent session tracking |
+| [SECURITY.md](docs/SECURITY.md) | Security practices & threat model |
 
 ---
 
-## 🤖 GitHub Copilot Usage
+## 🤖 GitHub Copilot Agent Mode Usage
 
-GitHub Copilot was integral to building MAINTAIN AI. Here's how it accelerated development:
+GitHub Copilot **Agent Mode** was integral to building MAINTAIN AI — not just for completions, but as an autonomous development partner that scaffolded multi-file architectures, generated and ran tests, performed cross-file refactors, and scripted Azure deployments. See [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for the project-specific Copilot configuration.
 
-### Code Generation
-- **Component scaffolding**: Copilot generated the initial structure for all 15+ React components (glassmorphism panels, map wrappers, chart components)
-- **Model Router**: The multi-model routing architecture with tier-based selection, automatic fallback, and Foundry SDK integration was designed and iterated with Copilot
-- **RAG Pipeline**: Knowledge document structuring, TF-IDF vectorization with domain-specific boosting, and cosine similarity retrieval were co-developed with Copilot
-- **Service layer**: The MCP service with caching, retry logic, and exponential backoff was developed iteratively with Copilot suggestions
-- **Python agents**: Copilot assisted with the Azure SDK integration patterns for `ChatCompletionsClient`, tool-calling loops, and MCP tool function signatures
-- **Type definitions**: The full `infrastructure.ts` type system (~30+ interfaces) was co-authored with Copilot
+### 1. Multi-File Agent Scaffolding (Agent Mode)
+Copilot Agent Mode generated the **6-agent pipeline architecture** across multiple files simultaneously:
+- `analysisAgent.py`, `prioritizationAgent.py`, `crewEstimationAgent.py`, `dispatchAgent.py`, `reportAgent.py`, `nlpDashboardAgent.py`
+- Each agent follows a consistent pattern: Model Router integration → MCP data fetching → structured output
+- Agent Mode maintained cross-file consistency (import paths, shared types, orchestrator integration)
 
-### Problem Solving (Copilot Chat)
-- **Foundry SDK migration**: When migrating from `AzureOpenAI` to `azure-ai-inference.ChatCompletionsClient`, Copilot Chat identified the correct SDK patterns, endpoint formats, and model routing architecture
-- **CORS mitigation**: Copilot suggested the graceful fallback-to-demo-mode pattern when browser security policies blocked MCP cross-origin requests
-- **Leaflet bundling**: Copilot recommended switching from CDN to npm-bundled CSS after tracking prevention blocked the external resource
+### 2. Test Generation (Agent Mode)
+Copilot Agent Mode created **324 unit tests** across 12 test files:
+- Generated test cases for edge conditions, boundary values, and mock-based isolation of external services
+- Produced complete test files with `conftest.py` fixtures, parametrized tests, and proper async mocking
+- Example: `test_mcp_client.py` (18 tests) was generated end-to-end by Agent Mode including thread-safety tests and timeout validation
 
-### Creative Features
-- **1,540-line animated brain intro** (`MaintainIntro.tsx`): The neural network SVG animation with lightning arcs was prototyped with Copilot, then refined for performance
-- **Pure SVG/CSS charts** (`PredictiveChart.tsx`): Copilot generated the trend line calculation and threshold visualization without any chart library
-- **Voice service**: Web Speech API integration with priority-based queue was built with Copilot inline suggestions
-- **What-If simulator**: The scenario parameter delta analysis logic was pair-programmed with Copilot
+### 3. Cross-File Refactoring (Agent Mode)
+Copilot Agent Mode extracted the shared `mcp_client.py` module from duplicated MCP call code across 4 agents:
+- Identified ~150 lines of duplicated `_mcp_call()`, `fetch_all_data()`, `get_work_orders()` across agents
+- Created the shared module with thread-safe request IDs, configurable timeouts, and convenience helpers
+- Updated all 4 consumer agents in a single refactoring session, maintaining backward compatibility
 
-### Documentation & Project Management
-- **CHANGELOG.md**: Full changelog with version history, build checkpoint tables, and agent attribution format — structured and maintained with Copilot Chat
-- **ERROR_LOG.md**: Error tracking system with root cause analysis, resolution steps, and prevention strategies — Copilot helped design the template and draft entries for all 9 errors (ERR-001 through ERR-009)
-- **DECISIONS.md**: Architecture Decision Records (ADR format) with context, alternatives, and consequences — Copilot generated the ADR template and helped articulate trade-offs
-- **AGENT_WORK_LOG.md**: Multi-agent session tracking with file locks and handoff protocol — co-authored with Copilot
-- **PLAN.md**: Phased implementation roadmap with task tables and checkpoint protocol — structured with Copilot Chat
-- **README.md**: Architecture diagrams (ASCII), demo script narrative, tech stack tables, and crew estimation formula — all drafted with Copilot assistance
-- **`.github/copilot-instructions.md`**: Custom Copilot instructions for Power SDK workflows — written with Copilot Chat
-- **Security remediation**: Copilot Chat identified exposed secrets in tracked files and helped redact credentials, create `.dockerignore`, and replace hardcoded endpoints with environment variables
+### 4. Frontend Component Development (Agent Mode)
+Copilot Agent Mode built **57 React components** including complex interactive features:
+- **Decay Simulator timeline** with parameter sliders and real-time chart updates
+- **NLP Dashboard Builder** with natural language → widget generation pipeline
+- **Agent Trace Viewer** waterfall visualization with expandable JSON payloads
+- **OverlayShell** with WCAG-compliant focus trapping across all 16+ overlay panels
+
+### 5. Azure Deployment Scripting (Agent Mode)
+Copilot Agent Mode generated deployment infrastructure:
+- `deploy-aca.ps1` for Azure Container Apps (ACR build → ACA deploy → health check)
+- `Dockerfile` with security best practices (non-root user, multi-stage build)
+- Dataverse table provisioning scripts (`provision-tables.ps1`)
+- CI/CD pipeline configuration (GitHub Actions with separate Python test + Node build jobs)
+
+### Copilot Chat & Inline Completions
+- **Foundry SDK migration**: Copilot Chat identified correct `azure-ai-inference.ChatCompletionsClient` patterns when migrating from `AzureOpenAI`
+- **CORS mitigation**: Suggested graceful fallback-to-demo-mode when browser security blocked MCP cross-origin requests
+- **Leaflet bundling**: Recommended npm-bundled CSS after tracking prevention blocked external CDN
+- **1,540-line animated brain intro** (`MaintainIntro.tsx`): Neural network SVG animation prototyped with Copilot
+- **Pure SVG/CSS charts** (`PredictiveChart.tsx`): Trend line calculation without any chart library
+- **Voice service**: Web Speech API integration with priority-based queue
+
+### Documentation (Copilot Chat)
+- **CHANGELOG.md**, **ERROR_LOG.md**, **DECISIONS.md**, **AGENT_WORK_LOG.md**, **PLAN.md** — all structured and co-authored with Copilot Chat
+- **Security remediation**: Copilot Chat identified exposed secrets and helped redact credentials, create `.dockerignore`, and replace hardcoded endpoints with environment variables
 
 ---
 
 ## ✅ Testing & CI
 
-- **252 passing tests** across 9 test files (pytest)
+- **324 passing tests** across 12 test files (pytest)
 - **GitHub Actions CI** — runs on every push/PR to `main`
   - Python 3.12 test job (pytest with placeholder env vars — no secrets exposed)
   - Node 20 build job (`npm ci && npm run build`)
-- Test coverage spans: API endpoints, orchestrator pipelines, model router, Semantic Kernel, content safety, prioritization, crew estimation, dispatch, RAG knowledge base
+- Test coverage spans: API endpoints, orchestrator pipelines, model router, Semantic Kernel, content safety, prioritization, crew estimation, dispatch, RAG knowledge base, shared MCP client
 
 ```bash
 # Run tests locally
 python -m pytest agents/tests/ --ignore=agents/tests/test_rag_knowledge_base.py -q
-# 252 passed in ~4s
+# 324 passed in ~6s
 ```
 
 ---
@@ -749,6 +765,7 @@ python -m pytest agents/tests/ --ignore=agents/tests/test_rag_knowledge_base.py 
 - Skip-to-content link for keyboard navigation
 - `<main>` landmark with `role="main"`
 - All overlays: `role="dialog"`, `aria-modal`, `aria-labelledby`
+- **Focus trapping** in all overlay panels (Tab/Shift+Tab cycling, auto-focus on mount)
 - `<nav>` for header actions, `<aside>` for AI panel
 - `role="toolbar"` on quick actions bar
 - `aria-label` on all icon-only buttons, selects, and interactive elements

@@ -23,81 +23,14 @@ load_dotenv(_env_path)
 # ── Model Router (Foundry SDK) ──
 from model_router import chat_completion, route, get_router_status
 
-# ============================================
-# Configuration
-# ============================================
-
-MCP_ENDPOINT = os.environ.get(
-    "INFRAWATCH_MCP_ENDPOINT",
-    ""
+# ── Shared MCP Client ──
+from mcp_client import (
+    mcp_call as _mcp_call,
+    get_work_orders,
+    get_potholes,
+    get_sidewalk_issues,
+    get_schools,
 )
-
-# ============================================
-# MCP Tool Functions
-# ============================================
-
-def get_work_orders() -> dict[str, Any]:
-    """Retrieve all work orders from Lake Forest infrastructure database."""
-    import requests
-    response = requests.post(
-        MCP_ENDPOINT,
-        json={"jsonrpc": "2.0", "id": 1, "method": "tools/call",
-              "params": {"name": "get_work_orders", "arguments": {}}},
-        headers={"Content-Type": "application/json"},
-        timeout=60
-    )
-    result = response.json()
-    if "result" in result and "content" in result["result"]:
-        return json.loads(result["result"]["content"][0]["text"])
-    return {"error": "Failed to retrieve work orders"}
-
-
-def get_potholes() -> dict[str, Any]:
-    """Retrieve all pothole reports from the city database."""
-    import requests
-    response = requests.post(
-        MCP_ENDPOINT,
-        json={"jsonrpc": "2.0", "id": 2, "method": "tools/call",
-              "params": {"name": "get_potholes", "arguments": {}}},
-        headers={"Content-Type": "application/json"},
-        timeout=60
-    )
-    result = response.json()
-    if "result" in result and "content" in result["result"]:
-        return json.loads(result["result"]["content"][0]["text"])
-    return {"error": "Failed to retrieve potholes"}
-
-
-def get_sidewalk_issues() -> dict[str, Any]:
-    """Retrieve all sidewalk issues from the city database."""
-    import requests
-    response = requests.post(
-        MCP_ENDPOINT,
-        json={"jsonrpc": "2.0", "id": 3, "method": "tools/call",
-              "params": {"name": "get_sidewalk_issues", "arguments": {}}},
-        headers={"Content-Type": "application/json"},
-        timeout=60
-    )
-    result = response.json()
-    if "result" in result and "content" in result["result"]:
-        return json.loads(result["result"]["content"][0]["text"])
-    return {"error": "Failed to retrieve sidewalk issues"}
-
-
-def get_schools() -> dict[str, Any]:
-    """Retrieve all schools for proximity analysis."""
-    import requests
-    response = requests.post(
-        MCP_ENDPOINT,
-        json={"jsonrpc": "2.0", "id": 4, "method": "tools/call",
-              "params": {"name": "get_schools", "arguments": {}}},
-        headers={"Content-Type": "application/json"},
-        timeout=60
-    )
-    result = response.json()
-    if "result" in result and "content" in result["result"]:
-        return json.loads(result["result"]["content"][0]["text"])
-    return {"error": "Failed to retrieve schools"}
 
 
 # ============================================

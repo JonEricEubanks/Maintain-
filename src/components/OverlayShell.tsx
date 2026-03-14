@@ -19,7 +19,7 @@
  *   split → side-by-side wizard+map (AnalysisWizard)
  */
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { Button } from '@fluentui/react-components';
 import { Dismiss24Regular } from '@fluentui/react-icons';
 import { useApp } from '../context/AppContext';
@@ -45,6 +45,8 @@ interface OverlayShellProps {
   headerExtra?: React.ReactNode;
 }
 
+const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 const OverlayShell: React.FC<OverlayShellProps> = ({
   children,
   size = 'md',
@@ -57,6 +59,7 @@ const OverlayShell: React.FC<OverlayShellProps> = ({
 }) => {
   const { closeOverlay } = useApp();
   const handleClose = onCloseProp ?? closeOverlay;
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // ESC key handler
   useEffect(() => {
@@ -70,6 +73,34 @@ const OverlayShell: React.FC<OverlayShellProps> = ({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [disableEscClose, handleClose]);
+
+  // Focus trap — keep Tab/Shift+Tab cycling within the overlay
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    // Auto-focus the panel (or its first focusable child) on mount
+    const firstFocusable = panel.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+    if (firstFocusable) firstFocusable.focus();
+    else panel.focus();
+
+    const onTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const focusable = panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    panel.addEventListener('keydown', onTab);
+    return () => panel.removeEventListener('keydown', onTab);
+  }, []);
 
   const handleBackdropClick = useCallback(
     (e: React.MouseEvent) => {
@@ -86,7 +117,7 @@ const OverlayShell: React.FC<OverlayShellProps> = ({
 
   if (size === 'split') {
     return (
-      <div className="overlay-split" role="dialog" aria-modal="true" aria-label={title || 'Dialog'} onClick={handleBackdropClick}>
+      <div className="overlay-split" role="dialog" aria-modal="true" aria-label={title || 'Dialog'} onClick={handleBackdropClick} ref={panelRef} tabIndex={-1}>
         {children}
       </div>
     );
@@ -103,6 +134,8 @@ const OverlayShell: React.FC<OverlayShellProps> = ({
           aria-labelledby={titleId}
           aria-label={!title ? 'Dialog' : undefined}
           onClick={(e) => e.stopPropagation()}
+          ref={panelRef}
+          tabIndex={-1}
         >
           {title && (
             <div className="overlay-panel-header">
@@ -129,6 +162,8 @@ const OverlayShell: React.FC<OverlayShellProps> = ({
         aria-labelledby={titleId}
         aria-label={!title ? 'Dialog' : undefined}
         onClick={(e) => e.stopPropagation()}
+        ref={panelRef}
+        tabIndex={-1}
       >
         {title && (
           <div className="overlay-panel-header">

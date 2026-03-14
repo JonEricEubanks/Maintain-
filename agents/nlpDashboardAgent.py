@@ -31,6 +31,9 @@ from openai import AzureOpenAI  # Kept for Code Interpreter (Assistants API only
 # ── Model Router (Foundry SDK) ──
 from model_router import chat_completion, route
 
+# ── Shared MCP Client ──
+from mcp_client import mcp_call as _mcp_call, fetch_all_data
+
 # ============================================
 # Configuration
 # ============================================
@@ -43,39 +46,6 @@ if "/api/projects" in AZURE_ENDPOINT:
 API_VERSION = os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview")
 MODEL_NAME = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4.1-mini")
 API_KEY = os.environ.get("AZURE_AI_API_KEY", "")
-MCP_ENDPOINT = os.environ.get("INFRAWATCH_MCP_ENDPOINT", "")
-
-
-# ============================================
-# MCP Data Fetching
-# ============================================
-
-def _mcp_call(tool_name: str) -> dict[str, Any]:
-    import requests
-    try:
-        resp = requests.post(
-            MCP_ENDPOINT,
-            json={
-                "jsonrpc": "2.0", "id": 1, "method": "tools/call",
-                "params": {"name": tool_name, "arguments": {}},
-            },
-            headers={"Content-Type": "application/json"},
-            timeout=60,
-        )
-        result = resp.json()
-        if "result" in result and "content" in result["result"]:
-            return json.loads(result["result"]["content"][0]["text"])
-    except Exception as e:
-        print(f"   ⚠️ MCP {tool_name} failed: {e}")
-    return {"error": f"Failed to retrieve {tool_name}"}
-
-
-def fetch_all_data() -> dict[str, Any]:
-    data = {}
-    for tool in ["get_work_orders", "get_potholes", "get_sidewalk_issues", "get_schools"]:
-        print(f"   📡 Fetching: {tool}")
-        data[tool] = _mcp_call(tool)
-    return data
 
 
 def normalize_issues(mcp_data: dict[str, Any]) -> list[dict[str, Any]]:

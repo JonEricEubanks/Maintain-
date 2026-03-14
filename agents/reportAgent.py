@@ -25,44 +25,8 @@ load_dotenv(_env_path)
 # ── Model Router (Foundry SDK) ──
 from model_router import chat_completion, route
 
-# ============================================
-# Configuration
-# ============================================
-
-MCP_ENDPOINT = os.environ.get("INFRAWATCH_MCP_ENDPOINT", "")
-
-# ============================================
-# MCP Data Fetching (reuse from analysisAgent)
-# ============================================
-
-def _mcp_call(tool_name: str) -> dict[str, Any]:
-    """Call an MCP tool and return parsed JSON."""
-    import requests
-    try:
-        resp = requests.post(
-            MCP_ENDPOINT,
-            json={
-                "jsonrpc": "2.0", "id": 1, "method": "tools/call",
-                "params": {"name": tool_name, "arguments": {}},
-            },
-            headers={"Content-Type": "application/json"},
-            timeout=60,
-        )
-        result = resp.json()
-        if "result" in result and "content" in result["result"]:
-            return json.loads(result["result"]["content"][0]["text"])
-    except Exception as e:
-        print(f"   ⚠️ MCP {tool_name} failed: {e}")
-    return {"error": f"Failed to retrieve {tool_name}"}
-
-
-def fetch_all_data() -> dict[str, Any]:
-    """Fetch all infrastructure data from MCP."""
-    data = {}
-    for tool in ["get_work_orders", "get_potholes", "get_sidewalk_issues", "get_schools"]:
-        print(f"   📡 Fetching: {tool}")
-        data[tool] = _mcp_call(tool)
-    return data
+# ── Shared MCP Client ──
+from mcp_client import mcp_call as _mcp_call, fetch_all_data
 
 
 # ============================================

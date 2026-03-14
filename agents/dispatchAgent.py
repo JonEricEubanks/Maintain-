@@ -26,53 +26,8 @@ load_dotenv(_env_path)
 # ── Model Router (Foundry SDK) ──
 from model_router import chat_completion, route
 
-# ============================================
-# Configuration
-# ============================================
-
-MCP_ENDPOINT = os.environ.get("INFRAWATCH_MCP_ENDPOINT", "")
-
-# ============================================
-# MCP Read-Only Data Fetch
-# ============================================
-
-def _mcp_call(tool_name: str) -> dict[str, Any]:
-    """Call an MCP tool (READ-ONLY). Never modifies MCP data."""
-    import requests
-    try:
-        resp = requests.post(
-            MCP_ENDPOINT,
-            json={
-                "jsonrpc": "2.0", "id": 1, "method": "tools/call",
-                "params": {"name": tool_name, "arguments": {}},
-            },
-            headers={"Content-Type": "application/json"},
-            timeout=60,
-        )
-        result = resp.json()
-        if "result" in result and "content" in result["result"]:
-            return json.loads(result["result"]["content"][0]["text"])
-    except Exception as e:
-        print(f"   ⚠️ MCP {tool_name} read failed: {e}")
-    return {"error": f"Failed to read {tool_name}"}
-
-
-def get_work_orders() -> list[dict]:
-    data = _mcp_call("get_work_orders")
-    if isinstance(data, dict) and "error" not in data:
-        return data.get("work_orders", data.get("data", []))
-    if isinstance(data, list):
-        return data
-    return []
-
-
-def get_schools() -> list[dict]:
-    data = _mcp_call("get_schools")
-    if isinstance(data, dict):
-        return data.get("schools", data.get("data", []))
-    if isinstance(data, list):
-        return data
-    return []
+# ── Shared MCP Client ──
+from mcp_client import mcp_call as _mcp_call, get_work_orders, get_schools
 
 # ============================================
 # Repair Estimation Tables
